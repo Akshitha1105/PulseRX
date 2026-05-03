@@ -1,0 +1,21 @@
+kind = "web"
+previewPath = "/"
+title = "PulseRx"
+version = "1.0.0"
+id = "pulserx-python-app"
+
+[[services]]
+localPort = 5000
+name = "PulseRx"
+paths = ["/"]
+
+[services.development]
+run = "python artifacts/pulserx/main.py"
+
+[services.production]
+
+[services.production.run]
+args = ["python", "artifacts/pulserx/main.py"]
+
+[services.production.run.env]
+PORT = "5000"
