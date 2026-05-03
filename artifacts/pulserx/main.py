@@ -1,12 +1,14 @@
 import os
 import re
+import io
+import csv
 import json
 import random
 from datetime import datetime, timedelta
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException, Request, Form
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
@@ -512,6 +514,80 @@ def get_stats(project_id: Optional[int] = None):
         db.close()
 
 
+@app.get("/export/posts")
+def export_posts_csv(project_id: Optional[int] = None):
+    db = SessionLocal()
+    try:
+        query = db.query(Post)
+        if project_id:
+            query = query.filter(Post.project_id == project_id)
+        posts = query.order_by(Post.ingested_at.desc()).all()
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow([
+            "post_id", "project_id", "source", "author", "title", "body",
+            "sentiment_score", "sentiment_label", "entities",
+            "is_adverse_event", "url", "ingested_at"
+        ])
+        for p in posts:
+            entities = json.loads(p.entities)
+            entity_str = "; ".join(f"{e['type']}:{e['value']}" for e in entities)
+            writer.writerow([
+                p.id, p.project_id, p.source, p.author,
+                p.title, p.body,
+                p.sentiment_score, p.sentiment_label,
+                entity_str, "Yes" if p.is_adverse_event else "No",
+                p.url, p.ingested_at.isoformat()
+            ])
+
+        output.seek(0)
+        filename = f"pulserx_posts_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+        return StreamingResponse(
+            iter([output.getvalue()]),
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    finally:
+        db.close()
+
+
+@app.get("/export/alerts")
+def export_alerts_csv(project_id: Optional[int] = None):
+    db = SessionLocal()
+    try:
+        query = db.query(Alert).join(Post)
+        if project_id:
+            query = query.filter(Post.project_id == project_id)
+        alerts = query.order_by(Alert.created_at.desc()).all()
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow([
+            "alert_id", "post_id", "source", "author", "title", "body",
+            "adverse_event_triggers", "sentiment_score", "sentiment_label",
+            "url", "ingested_at", "alert_created_at"
+        ])
+        for a in alerts:
+            writer.writerow([
+                a.id, a.post_id, a.post.source, a.post.author,
+                a.post.title, a.post.body,
+                a.reason, a.post.sentiment_score, a.post.sentiment_label,
+                a.post.url, a.post.ingested_at.isoformat(),
+                a.created_at.isoformat()
+            ])
+
+        output.seek(0)
+        filename = f"pulserx_alerts_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+        return StreamingResponse(
+            iter([output.getvalue()]),
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    finally:
+        db.close()
+
+
 # ─────────────────────────────────────────────
 # HTML Frontend
 # ─────────────────────────────────────────────
@@ -842,6 +918,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <button class="btn btn-success" id="ingest-btn" onclick="ingestPosts()">
         &#8635; Fetch Posts
       </button>
+      <button class="btn" style="background:var(--surface2);border:1px solid var(--border);color:var(--text)" onclick="exportCSV('posts')" title="Export all posts as CSV">
+        &#8659; Posts CSV
+      </button>
+      <button class="btn" style="background:rgba(255,77,109,0.12);border:1px solid rgba(255,77,109,0.3);color:var(--danger)" onclick="exportCSV('alerts')" title="Export adverse event alerts as CSV">
+        &#8659; Alerts CSV
+      </button>
     </div>
 
     <!-- Sentiment Chart -->
@@ -1132,6 +1214,18 @@ function renderAlerts(alerts) {
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function exportCSV(type) {
+  const base = type === 'posts' ? '/export/posts' : '/export/alerts';
+  const url = activeProjectId ? base + '?project_id=' + activeProjectId : base;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('Downloading ' + type + ' CSV...');
 }
 
 // Initial load
