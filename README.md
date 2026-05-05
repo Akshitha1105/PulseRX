@@ -48,21 +48,24 @@ What it does:
 Result:
 Less guesswork. Faster iteration. Better starting points.
 
-🏗️ Architecture
-┌───────────────────────────────────────────────┐
-│                  PulseRX                      │
-├──────────────────────┬────────────────────────┤
-│   Interface Layer    │   Backend Engine       │
-│   Simple UI / CLI    │   Python Core Logic    │
-│                      │   Data Processing      │
-├──────────────────────┴────────────────────────┤
-│                AI / ML Layer                  │
-│   Feature Extraction · Pattern Matching       │
-│   Lightweight Prediction Model               │
-├───────────────────────────────────────────────┤
-│          Molecular Processing Pipeline        │
-│   Input → Representation → Analysis → Score   │
-└───────────────────────────────────────────────┘
+## 🏗️ Architecture
+
+```
++-------------------------------------------------------+
+|                     PulseRX                            |
++----------------------+--------------------------------+
+|   Interface Layer    |   Backend Engine               |
+|   Simple UI / CLI    |   Python Core Logic            |
+|                      |   Data Processing              |
++----------------------+--------------------------------+
+|                 AI / ML Layer                         |
+|   Feature Extraction · Pattern Matching               |
+|   Lightweight Prediction Model                        |
++-------------------------------------------------------+
+|          Molecular Processing Pipeline                |
+|   Input → Representation → Analysis → Score           |
++-------------------------------------------------------+
+```
 ⚡ Key Features
 Feature	Description
 🧠 Molecular Pattern Analysis	Identifies structural similarities and trends
