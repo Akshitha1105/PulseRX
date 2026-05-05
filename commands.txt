@@ -1,0 +1,4 @@
+pip install fastapi "uvicorn[standard]" sqlalchemy praw textblob python-multipart
+python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('averaged_perceptron_tagger'); nltk.download('averaged_perceptron_tagger_eng')"
+cd artifacts/pulserx
+python main.py
