@@ -88,13 +88,21 @@ Scoring system → ranks candidates quickly
 
 🗂️ Project Structure
 PulseRX/
+
 ├── data/                # Sample molecular datasets
+
 ├── models/              # ML / scoring logic
+
 ├── utils/               # Helper functions
+
 ├── core/                # Main processing pipeline
+
 ├── app.py               # Entry point
+
 ├── requirements.txt
+
 └── README.md
+
 🚀 Quick Start
 Prerequisites
 Python 3.8+
