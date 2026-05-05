@@ -4,14 +4,17 @@ AI Platform for Molecular Discovery in Catalysis & Synthetic Biology
 
 Turning slow, trial-heavy molecular discovery into fast, guided exploration.
 
-🏆 Hackathon
-Field	Details
-Event	AI for Bharat 2 — HackerEarth
-Theme	Theme 4: AI Platform for Molecular Discovery in Chemical Catalysis and Synthetic Biology
-Stage	🚧 Prototype Round
-Team	(Add your team name)
-Demo	(Add your link)
-🎯 The Problem
+## 🏆 Hackathon
+
+| Field | Details |
+|------|--------|
+| Event | AI for Bharat 2 — HackerEarth |
+| Theme | Theme 4: AI Platform for Molecular Discovery in Chemical Catalysis and Synthetic Biology |
+| Stage | 🚧 Prototype Round |
+| Team | *(Add your team name)* |
+| Demo | *(Add your link)* |
+
+## 🎯 The Problem
 
 A researcher sits with a list of possible molecular combinations.
 
@@ -31,7 +34,7 @@ Decisions → based on intuition more than insight
 
 The bottleneck isn’t lack of data. It’s lack of direction.
 
-✅ The Solution
+## ✅ The Solution
 
 PulseRX is a lightweight AI-driven discovery assistant that helps narrow down molecular possibilities before they reach the lab.
 
@@ -66,7 +69,7 @@ Less guesswork. Faster iteration. Better starting points.
 |   Input → Representation → Analysis → Score           |
 +-------------------------------------------------------+
 ```
-⚡ Key Features
+## ⚡ Key Features
 Feature	Description
 🧠 Molecular Pattern Analysis	Identifies structural similarities and trends
 ⚡ Fast Candidate Filtering	Removes weak candidates early
@@ -86,7 +89,7 @@ Scoring system → ranks candidates quickly
 
 👉 Focus: speed + direction, not perfect prediction
 
-🗂️ Project Structure
+## 🗂️ Project Structure
 PulseRX/
 
 ├── data/                # Sample molecular datasets
@@ -103,7 +106,7 @@ PulseRX/
 
 └── README.md
 
-🚀 Quick Start
+## 🚀 Quick Start
 Prerequisites
 Python 3.8+
 Setup
@@ -111,13 +114,15 @@ git clone <your-repo-link>
 cd PulseRX
 pip install -r requirements.txt
 python app.py
-🎬 Demo Walkthrough
+
+## 🎬 Demo Walkthrough
 Input molecular parameters / structure
 System processes representation
 AI evaluates candidates
 Outputs ranked suggestions
 User identifies best candidates for testing
-⚠️ Disclaimer
+
+## ⚠️ Disclaimer
 
 This is a hackathon prototype.
 
