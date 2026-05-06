@@ -9,7 +9,7 @@ Turning slow, trial-heavy molecular discovery into fast, guided exploration.
 | Field | Details |
 |------|--------|
 | Event | AI for Bharat 2 — HackerEarth |
-| Theme | Theme 4: AI Platform for Molecular Discovery in Chemical Catalysis and Synthetic Biology |
+| Theme | Theme 6: Real-Time Social Listening for Patient Experience & Safety Signals |
 | Stage | 🚧 Prototype Round |
 | Team | *(Add your team name)* |
 | Demo | *(Add your link)* |
